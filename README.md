@@ -1,6 +1,6 @@
 # MomoTalk
 
-A instant messaging software for Application Development Practice I (network+ Java).
+An instant messaging software for Application Development Practice I (network+ Java).
 
 Based on java and SQLite.
 
