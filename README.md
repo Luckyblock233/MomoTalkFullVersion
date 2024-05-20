@@ -8,4 +8,4 @@ To understand the functions, please refer to document under `.\doc`.
 
 The title comes from mobile game: Blue Archive, and thanks to support of my waifu Yukka.
 
-Main reference: code of Kawaii Liqing.
+Main reference: code of Kawaii Liqing, adding database with SQLite and repair several of bugs.
