@@ -651,8 +651,8 @@ public class Client {
             public void actionPerformed(ActionEvent e) {
                 String groupAccount = groupList.getSelectedValue();
                 groupAccount = groupAccount.substring(groupAccount.indexOf("(") + 1, groupAccount.indexOf(")"));
-                sendMessage("COMMAND@QUITGROUP@" + user.getAccount() + "@" + groupAccount);
                 sendMessage("COMMAND@UPDATE_DATABASE_QUITGROUP@" + user.getAccount() + "@" + groupAccount);
+                sendMessage("COMMAND@QUITGROUP@" + user.getAccount() + "@" + groupAccount);
                 if (Accounts.contains(groupAccount)) {
                     int index = Accounts.indexOf(groupAccount);
                     textAreas.remove(index);

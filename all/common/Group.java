@@ -13,6 +13,9 @@ public class Group {
         this.account = account;
         this.members = new ArrayList<>();
     }
+    public void deleteMember(User user) {
+        members.removeIf(member -> user.getAccount().equals(member.getAccount()));
+    }
     public Boolean haveMember(User user) {
         for (User member: members) {
             if (user.getAccount().equals(member.getAccount())) {

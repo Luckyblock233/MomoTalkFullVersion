@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -225,8 +226,8 @@ public class Server extends Servermethod {
                                             w.close();
                                             socket.close();
                                         } else if (!onlineUsers.containsKey(account)) {
-                                            User user = ImportFactory.getUserImport().login(account,password);
-                                            if (user != null) {
+                                            try {
+                                                User user = ImportFactory.getUserImport().login(account,password);
                                                 w.println("SUCCESS@"+user.getUserName());
                                                 w.flush();
                                                 isDone = true;
@@ -237,9 +238,11 @@ public class Server extends Servermethod {
                                                 listModel.addElement(client.getUser().getUserName() + " (" + client.getUser().getAccount() + ")");// 更新在线列表
                                                 contentArea.append(client.getUser().getUserName() + " (" + client.getUser().getAccount() + ")" + "上线!\r\n");
                                                 frame.repaint();
-                                            } else {
+                                            } catch (NullPointerException e) {
                                                 w.println("ERROR");
                                                 w.flush();
+                                            } catch (SQLException e) {
+                                                e.printStackTrace();
                                             }
                                         } else if (onlineUsers.containsKey(account)) {
                                             w.println("DUPLICATED");
@@ -459,7 +462,7 @@ public class Server extends Servermethod {
                                 String source = stringTokenizer.nextToken();
                                 String groupAccount = stringTokenizer.nextToken();
                                 String groupName = groups.get(groupAccount).getName();
-                                groups.get(groupAccount).getMembers().remove(source);
+                                groups.get(groupAccount).deleteMember(onlineUsers.get(source));
                                 if (groups.get(groupAccount).getMembers().isEmpty()) {
                                     groups.remove(groupAccount);
                                     try {

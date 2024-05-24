@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface UserImport {
-    public User login(String userId, String userPassword) throws SQLException;
+    public User login(String userId, String userPassword) throws Exception;
     public Boolean register(User user) throws SQLException;
     public ArrayList<User> getFriendList(String user_id) throws SQLException;
     public ArrayList<Group> getGroupList(String user_id) throws SQLException;

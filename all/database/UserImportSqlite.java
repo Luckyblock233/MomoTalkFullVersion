@@ -24,33 +24,49 @@ public class UserImportSqlite implements UserImport {
         return max_id;
     }
 
-    private User getUser(String userId) throws SQLException {
+    private User getUser(String userId) throws Exception {
         Connection connection=DBConnection.getConnection();
         String sql="select * from tbl_user where user_id=?";
         PreparedStatement statement=connection.prepareStatement(sql);
         statement.setString(1,userId);
         ResultSet resultSet = statement.executeQuery();
-        User user = null;
+        User user = new User();
         if(resultSet.next()) {
             user = new User(resultSet.getString("user_id"),
                     resultSet.getString("password"),
                     resultSet.getString("user_name"));
+            statement.close();
+            resultSet.close();
+        } else {
+            statement.close();
+            resultSet.close();
+            throw new NullPointerException();
         }
-        statement.close();
-        resultSet.close();
         return user;
     }
 
     @Override
-    public User login(String userId, String userPassword) throws SQLException {
-        User user = getUser(userId);
-        if (user != null && !Objects.equals(user.getPassword(), userPassword)) user = null;
-        return new User(user.getAccount(), user.getUserName());
+    public User login(String userId, String userPassword) throws Exception {
+        User user = new User();
+        try {
+            user = getUser(userId);
+            if (!Objects.equals(user.getPassword(), userPassword)) {
+                throw new NullPointerException();
+            }
+        } catch (NullPointerException e) {
+            throw new NullPointerException(e.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
     @Override
     public Boolean register(User user) throws SQLException {
-        if (getUser(user.getAccount()) != null) return false;
+        try {
+            getUser(user.getAccount());
+            return false;
+        } catch (Exception e) {}
 
         Connection connection=DBConnection.getConnection();
         String sql="insert into tbl_user values(?,?,?)";

@@ -403,6 +403,7 @@ public class StartWindow {
                             messageThread.start();
                             isConnected = true;// 已经连接上了
 
+                            onLineUsers.put(user.getAccount(), user);
                             nameLabel.setText(" Hello, " + user.getUserName());
                             texttitlelabel.setText("MomoTalk " + user.getUserName());
                             startFrame.setVisible(false);
